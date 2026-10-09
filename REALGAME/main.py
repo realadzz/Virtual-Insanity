@@ -13,7 +13,7 @@ def print_controls():
  ══ NAVIGATION ══════════════════════════════════════════
  ├─ MOVE   ►  [W] Up • [A] Left • [S] Down • [D] Right
  ├─ ACTION ►  [E] Interact / Enter Room
- └─ MENUS  ►  [Q] Inventory  │  [T] Stat Check
+ └─ MENUS  ►  [Q] Inventory  │  [T] Stats Check
  ════════════════════════════════════════════════════════
 """)
 
@@ -50,8 +50,8 @@ def handle_door(player, current_map_name, lab_visits):
         if lab_visits == 0:
             print("*You stepped out of the lab, and continued to walk around.")
             print("You look outside, finally getting a breath of fresh air. However... something is wrong.")
-            print("Despite not remembering much, you remember there once being an amazing, flourishing city.")
-            print("That city, however, is now different. It is destroyed, overrun by nature.")
+            print("Despite not remembering much, you remember there once being an amazing, flourishing city. You can't seem to remember its name though..")
+            print("Regardless, this city is now different. It is destroyed, overrun by nature. Vines cling onto skyscrapers, flowers bloom on windows and you can smell the fresh air.")
         else:
             print("*You stepped back into the ruins.")
         player.x, player.y = 0, 2
@@ -66,9 +66,9 @@ def describe_tile(code):
     if code == "w":
         print("*There is a wall here.")
     elif code == "d":
-        print("*There are some desks here. They are all covered in dust, and have scattered papers all over.")
+        print("*There are some desks here. They are all covered in dust, and have scattered papers all over. They seem to be unimportant.")
     elif code == "r":
-        print("*You notice a bunch of robots under some debris. They all appear to be defunct.")
+        print("*You notice a bunch of robots under some debris. They appear to be defunct..")
 
 
 def run_game():
@@ -86,7 +86,7 @@ def run_game():
     glass_shard_taken = False
     blue_helmet_taken = False
 
-    print("You feel like you should walk around, and try to understand what is going on.")
+    print("You decide to explore, and try to understand what is going on.")
     print("Try moving around. The controls are listed below: ")
     print_controls()
 
@@ -110,7 +110,6 @@ def run_game():
             blue_helmet_taken = pickup_blue_helmet(player)
             if blue_helmet_taken:
                 current_map[player.y][player.x] = "f"
-            blue_helmet_taken = pickup_blue_helmet(player)
         elif code == "e":
             current_map, current_map_name, lab_visits = handle_door(
                 player, current_map_name, lab_visits
