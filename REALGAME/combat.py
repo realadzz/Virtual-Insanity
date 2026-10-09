@@ -6,7 +6,7 @@ import random
 from enemies import spawn_enemies
 
 # the things the player can do under act, check is always first, rename/add effects to the other two here later unless you wanna keep these as the default but why would you do that lmao
-ACT_OPTIONS = ["Check", "Taunt", "Threaten"]
+ACT_OPTIONS = ["Check", "Plead", "Threaten"]
 
 # reward ranges, fighting gives xp and platinum, sparing gives only platinum but more of it
 # NOTE: these get rolled fresh inside start_battle each time you win, not here, random.randint() up here would only run once when the file loads and then every win for the rest of the game would give the exact same number which is stupid
@@ -122,7 +122,7 @@ def do_act(enemies):
     if target is None:
         return
 
-    print("\n1. Check   2. Taunt   3. Threaten   0. Back")
+    print("\n1. Check   2. Plead   3. Threaten   0. Back")
     choice = input("-> ").strip()
 
     if choice == "1":
@@ -130,10 +130,10 @@ def do_act(enemies):
         print(f"*{target['description']}*")
     elif choice == "2":
         target["spareable"] = True  # this is the "method" that makes it spareable
-        print(f"\n*You taunt the {enemy_display_name(target)}. It seems ready to be spared.*")
+        print(f"\n*You beg the {enemy_display_name(target)} for mercy. It seems to pity you, and decides to spare you.*")
     elif choice == "3":
         target["spareable"] = True  # this one too - either works
-        print(f"\n*You threaten the {enemy_display_name(target)}. It seems ready to be spared.*")
+        print(f"\n*You threaten the {enemy_display_name(target)}. It decides to spare you.*")
     elif choice == "0":
         return
     else:
