@@ -4,14 +4,14 @@
 
 def pickup_glass_shard(player):
     choice = input(
-        "*There is a glass shard on the ground. It is somewhat shaped like a knife.\n"
+        "*There is a glass shard on the ground. It has the shape of a small blade.\n"
         "Take it?\n*Yes *No\n-> "
     )
     while choice.strip() == "":
         choice = input("*. . .\n-> ")
 
     if choice.lower() == "yes":
-        print("*You picked up the glass shard. Hopefully you don't get a cut.")
+        print("*You picked up the glass shard. Try to not get a cut.")
         player.add_weapon("glass_shard")
         return True
     else:
@@ -21,8 +21,8 @@ def pickup_glass_shard(player):
 
 def pickup_blue_helmet(player):
     choice = input(
-        "*Behind some debris, you notice a half broken armour stand.\n"
-        "You notice a helmet that pulses blue when approaching it. Take it?\n"
+        "*Behind some debris, you notice a broken dummy.\n"
+        "*On it is a broken blue helmet, pulsing with energy. Take it?\n"
         "*Yes *No\n-> "
     )
     while choice.strip() == "":
@@ -30,10 +30,10 @@ def pickup_blue_helmet(player):
 
     if choice.lower() == "yes":
         if player.health > 1:
-            print("*You picked up the blue helmet. You got stung by a little zap, but you're fine.")
+            print("*You picked up the blue helmet. You got stung by a small zap, but you'll be fine.")
             player.take_damage(1)
         else:
-            print("*You picked up the blue helmet. You feel a weak force pushing it away, but it stops soon after.")
+            print("*You picked up the blue helmet. A weak force pushes you away, but stops soon after.")")
         player.add_armour("blue_helmet")
         return True
     else:
