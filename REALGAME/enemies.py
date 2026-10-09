@@ -7,14 +7,14 @@ import random
 ENEMY_TYPES = [
     {
         "name": "Rusted Robot",
-        "health": 12,
-        "attack": 3,
+        "health": 18,
+        "attack": 4,
         "description": "Its joints creak. It doesn't look too dangerous.",
     },
     {
         "name": "Sparking Drone",
-        "health": 8,
-        "attack": 4,
+        "health": 14,
+        "attack": 7,
         "description": "Loose wires spark dangerously every few seconds. Best not to touch them.",
     },
 ]
