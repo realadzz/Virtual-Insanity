@@ -33,7 +33,7 @@ def pickup_blue_helmet(player):
             print("*You picked up the blue helmet. You got stung by a small zap, but you'll be fine.")
             player.take_damage(1)
         else:
-            print("*You picked up the blue helmet. A weak force pushes you away, but stops soon after.")")
+            print("*You picked up the blue helmet. A weak force pushes you away, but stops soon after.")
         player.add_armour("blue_helmet")
         return True
     else:
