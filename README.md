@@ -8,12 +8,10 @@ PLANS:
 -Continue making maps.
 -Continue making enemies.
 
--Polish out the act system, found in combat.
+-Add ASCII art to the game.
 
--Implement game saving system.
+-Add music and sound effects to the game.
 
--Implement game loading and new game system.
-
--Consider adding ASCII art to the game.
+-Fix up small bugs and nitpicks
 
 -Get Jacky to add me on steam.
