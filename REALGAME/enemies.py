@@ -25,9 +25,9 @@ ENEMY_TYPES = [
     },
     {
         "name": "Sparking Drone",
-        "health": 14,
+        "health": 12,
         "min_attack": 1,
-        "max_attack": 5,
+        "max_attack": 7,
         "description": "Loose wires spark dangerously every few seconds. Best not to touch them.",
         "acts": [
             {"name": "Insulate", "spareable": True,
@@ -77,7 +77,7 @@ AMBUSH_ENEMIES = [
             {"name": "Pet", "spareable": True,
              "text": "You slowly reach out and pat its metal head. Its growling turns into a broken purr."},
             {"name": "Bark", "spareable": False,
-             "text": "You bark at it. It barks back, way louder."},
+             "text": "You bark at it. It barks back, way louder. Not good."},
         ],
     },
     {
