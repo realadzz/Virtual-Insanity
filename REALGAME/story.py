@@ -2,7 +2,7 @@
 # cutscenes and npc conversations live here so main.py doesn't turn into a novel and especially not a visual one ughhhh i hate visual novels except ddlc maybe
 
 from combat import start_battle
-from enemies import spawn_ambush_enemies
+from enemies import spawn_ambush_enemies, spawn_gridlock
 from allies import create_twinkly
 from text import type_print
 
@@ -120,12 +120,80 @@ def talk_to_twinkly(player, flags):
             say("Twinkly", "Hmm... you can't stay in here forever. And no offence, but you won't last long out there alone.")
             say("Twinkly", "So how about I come with you? I know these streets better than anyone!")
             say("Twinkly", "Besides... it's been a while since I had someone to look out for.")
+            say("Twinkly", "Oh! And take this. It's a repair kit, it can patch up just about anything. Even me, if I ever get knocked out!")
             player.allies.append(create_twinkly())
+            player.add_item("repair_kit")
             print("\n*Twinkly joined your party!*")
-            print("*In battle, Twinkly can now heal you, or calm enemies down so they're easier to spare.*\n")
+            print("*In battle, Twinkly can now heal you, or calm enemies down so they're easier to spare.*")
+            print("*You got a Repair Kit! Use it in battle with [I] ITEM.*\n")
             return True
         elif choice == "0":
             say("Twinkly", "Take your time! I'm not going anywhere.")
             return False
         else:
             print("*...that's not one of the options.*")
+
+
+def has_twinkly(player):
+    return any(ally["name"] == "Twinkly" for ally in player.allies)
+
+
+def boss_fight(player):
+    # the mini boss at the end of the demo. returns how the battle ended
+    print()
+    narrate("*You step onto the old crosswalk. The ground hums.")
+    narrate("*In front of you, a gigantic traffic light slowly turns to face you. It has arms.")
+    say("GRIDLOCK", "PEDESTRIAN DETECTED. YOU ARE CROSSING ON A RED LIGHT.")
+    say("GRIDLOCK", "THE PENALTY FOR JAYWALKING IS... DELETION.")
+    if has_twinkly(player):
+        say("Twinkly", "Uh oh. That's GRIDLOCK. He's been stuck on red for, like, ten years.")
+        say("Twinkly", "Maybe if we play by his rules he'll calm down? Or... we could fight him. I think we should try to get on his good side, to be honest..")
+    elif player.get_route() == "tragedy":
+        narrate("*GRIDLOCK's lights flicker for a moment, almost like it's nervous.")
+    return start_battle(player, None, enemies=spawn_gridlock())
+
+
+def demo_ending(player, result):
+    # plays once gridlock is beaten or spared
+    print()
+    if result == "spared":
+        narrate("*GRIDLOCK's lights slowly fade from red... to yellow... to green.")
+        say("GRIDLOCK", "...YOU MAY... CROSS.")
+        say("GRIDLOCK", "IT HAS BEEN A LONG TIME SINCE ANYONE WAITED FOR THE LIGHT. THANK YOU, PEDESTRIAN.")
+        narrate("*GRIDLOCK steps aside. For the first time in years, the intersection is open.")
+    else:
+        narrate("*GRIDLOCK's lights flicker one last time, then go dark.")
+        narrate("*The giant machine crashes into the road. The intersection is silent now.")
+
+    if has_twinkly(player):
+        say("Twinkly", "We did it!! Okay, I'll admit it, I was a bit scared there.")
+        say("Twinkly", "Past this intersection is the rest of Tarnia. Whatever's going on with the machines... I think we'll find out out there.")
+
+    narrate("*You look out over the overgrown city. Somewhere out there are the answers you're looking for.")
+    print()
+    print(" ═════════════════════════════════════")
+    print("        END OF THE DEMO")
+    print("        Thank you so much for playing")
+    print("        Virtual Insanity!")
+    print(" ─────────────────────────────────────")
+    print(f"        LV {player.level}   KILLS {player.kills}   SPARES {player.spares}")
+    print(" ═════════════════════════════════════")
+    print("*(You can keep exploring, or press [0] to quit.)*\n")
+
+
+def read_terminal(player):
+    # the lore terminal in the park. hints at what happened to the humans without saying too much
+    narrate("*An old public terminal. The screen is cracked, but it still turns on when you touch it.")
+    narrate("*Most of the files are corrupted. A few logs are still readable.")
+    print()
+    narrate("> LOG 0412: The new city system is amazing. It does EVERYTHING. I haven't cooked in months lol")
+    narrate("> LOG 0587: Everyone's talking about the ORIGIN update. It'll make life so much better for us!")
+    narrate("> LOG 0601: Applications for the [ERROR] programme are now available. Honestly, I doubt anyone would want to miss out on such an opportunity.")
+    narrate("> LOG 0602: Signed up. See you on the other side, Tarnia.")
+    narrate("> LOG 0603: ")
+    narrate("> LOG 0603: ")
+    narrate("> LOG 0603: ERROR. NO FURTHER LOGS FOUND.")
+    print()
+    if has_twinkly(player):
+        say("Twinkly", "Hmm... that programme thing.. it seems pretty important. We should find out what is going on.")
+

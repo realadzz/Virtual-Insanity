@@ -9,11 +9,12 @@ import time
 from player import Player
 from maps import (MAPS, MAP_NAMES, DOORS, BLOCKING_TILES, tile_code, get_bounds,
                   find_tile, find_adjacent_tile, render_map)
-from items import pickup_glass_shard, pickup_blue_helmet
+from items import PICKUPS, describe_pickup, take_pickup
 from encounters import check_for_encounter
 from intro import print_intro, get_username
 from menus import show_inventory, show_stats
-from story import ambush, rescue_cutscene, talk_to_twinkly
+from story import ambush, rescue_cutscene, talk_to_twinkly, boss_fight, demo_ending, read_terminal
+from shop import talk_to_vendy
 from save import make_save, load_save, write_save_file, save_file_exists, read_save_file
 from text import type_print
 
@@ -61,6 +62,14 @@ def move_player(player, direction, grid):
             print("*There is a wall here.")
         elif code == "tw":
             print("*He is tinkering with some scrap. [E] to talk.")
+        elif code == "sk":
+            print("*An old vending machine. Its screen is blinking. [E] to talk.")
+        elif code == "tm":
+            print("*An old public terminal. [E] to read it.")
+        elif code == "tr":
+            print("*A tree, growing right through the pavement.")
+        elif code == "gl":
+            print("*GRIDLOCK towers over you. Its lights are stuck on red.")
         return
 
     player.x, player.y = new_x, new_y
@@ -97,6 +106,13 @@ def handle_door(player, current_map_name, flags):
     else:
         type_print(f"*You head to {MAP_NAMES[dest_map]}.")
 
+    # first time reaching the crossroads, describe the place
+    if dest_map == "crossroads" and not flags["seen_crossroads"]:
+        type_print("*You climb up a broken off-ramp and find yourself at an old crossroads.")
+        type_print("*To the left, a shop sign flickers. To the right, trees have taken over a park.")
+        type_print("*Straight ahead, something huge is blinking red.")
+        flags["seen_crossroads"] = True
+
     player.x, player.y = dest_x, dest_y
     return dest_map
 
@@ -110,6 +126,8 @@ def describe_tile(code):
         type_print("*A car, rusted and crushed flat. Moss is growing out of the steering wheel, and vines cover the wheels.")
     elif code == "j":
         type_print("*A pile of scrap. Wires, bolts, a cracked screen. Nothing useful.")
+    elif code == "bs":
+        type_print("*An old crosswalk. Nobody's stopping you from crossing anymore.")
 
 
 def draw(world, current_map_name, player, clear=False):
@@ -141,13 +159,15 @@ def use_save_point(player, world, current_map_name, flags):
 
 def default_flags():
     # anything that only happens once goes in here
+    # (picked up items don't need flags, the item tile just turns into floor once it's taken)
     return {
-        "glass_shard_taken": False,
-        "blue_helmet_taken": False,
         "left_lab": False,
         "ambush_done": False,   # true once the highway ambush is over (on any route)
         "rescued": False,       # true once twinkly saves the player from the ambush
         "met_twinkly": False,   # true once twinkly's introduction has played
+        "seen_crossroads": False,
+        "met_vendy": False,
+        "boss_done": False,     # true once gridlock is beaten or spared
     }
 
 
@@ -219,16 +239,28 @@ def run_game():
             continue
         elif move == "e":
             # E only does something if the player is on or next to something they can interact with
+            here = tile_code(current_map, player.x, player.y)
             twinkly_position = find_adjacent_tile(current_map, player.x, player.y, "tw")
-            if tile_code(current_map, player.x, player.y) == "sp":
+            next_to_vendy = find_adjacent_tile(current_map, player.x, player.y, "sk") is not None
+            next_to_terminal = find_adjacent_tile(current_map, player.x, player.y, "tm") is not None
+            if here == "sp":
                 save = use_save_point(player, world, current_map_name, flags)
+            elif here in PICKUPS:
+                if take_pickup(player, here):
+                    current_map[player.y][player.x] = "f"  # the item's gone from the map once it's taken
             elif twinkly_position is not None:
                 joined = talk_to_twinkly(player, flags)
                 if joined:
                     tx, ty = twinkly_position
                     current_map[ty][tx] = "f"  # twinkly follows the player now, so he leaves his spot
                     player.follower_pos = (tx, ty)  # and starts following from where he was standing
-                    type_print("*Thank you for playing this early build of Virtual Insanity! More of Twinkly and Tarnia is coming soon. However, you should still probably be able to use twinkly in battles idrk go check actually please\n")
+                    type_print("*(Head back out to the highway, there's a way up to the north side of it now.)\n")
+                draw(world, current_map_name, player)
+            elif next_to_vendy:
+                talk_to_vendy(player, flags)
+                draw(world, current_map_name, player)
+            elif next_to_terminal:
+                read_terminal(player)
                 draw(world, current_map_name, player)
             else:
                 print("*There's nothing to interact with here.")
@@ -251,14 +283,8 @@ def run_game():
 
         result = None  # how a battle ended this turn, if there was one
 
-        if code == "g" and not flags["glass_shard_taken"]:
-            flags["glass_shard_taken"] = pickup_glass_shard(player)
-            if flags["glass_shard_taken"]:
-                current_map[player.y][player.x] = "f"
-        elif code == "bh" and not flags["blue_helmet_taken"]:
-            flags["blue_helmet_taken"] = pickup_blue_helmet(player)
-            if flags["blue_helmet_taken"]:
-                current_map[player.y][player.x] = "f"
+        if code in PICKUPS:
+            describe_pickup(code)  # the player presses [E] to actually take it
         elif code == "sp":
             type_print("*A calming light shines before you. [E] to interact.")
         elif code == "e":
@@ -284,11 +310,20 @@ def run_game():
                 player.x, player.y = 2, 3
                 draw(world, current_map_name, player)
                 result = None  # the rescue already redrew the map
+        elif code == "bs" and not flags["boss_done"]:
+            result = boss_fight(player)
+            if result in ("won", "spared"):
+                flags["boss_done"] = True
+                gx, gy = find_tile(current_map, "gl")
+                current_map[gy][gx] = "f"  # gridlock's gone (or stepped aside), so the way is clear
+                demo_ending(player, result)
+                draw(world, current_map_name, player)
+                result = None  # already handled, don't redraw again below
         else:
             describe_tile(code)
 
         # after every move, check if the player stepped onto a tile that should start a battle. This is the "hook" between the movement system and the combat system
-        if result is None and code != "am":
+        if result is None and code not in ("am", "bs"):
             result = check_for_encounter(player, world[current_map_name], current_map_name)
 
         if result == "dead":

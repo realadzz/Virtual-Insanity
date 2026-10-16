@@ -1,8 +1,11 @@
 # player stats
-# this lists things like their stats, position, and simple actions (take damage, pick up items, level up)
+# this lists things like their stats, position, and simple actions (take damage, pick up items, level up, equip stuff)
+
+from items import EQUIPMENT
 
 MAX_LEVEL = 20
 HEALTH_PER_LEVEL = 4  # max hp gained every level up
+ITEM_SLOTS = 8  # how many healing items the player can carry at once
 
 
 def xp_needed_for(level):
@@ -24,6 +27,13 @@ class Player:
         # 8 weapon/armour slots, empty string means an empty slot
         self.weapons = [""] * 8
         self.armours = [""] * 8
+
+        # healing items (see HEALING_ITEMS in items.py), e.g. ["old_battery", "repair_kit"]
+        self.items = []
+
+        # what's currently equipped (see EQUIPMENT in items.py). None means nothing equipped
+        self.equipped_weapon = None
+        self.equipped_armour = None
 
         # party members who've joined the player (see allies.py)
         self.allies = []
@@ -49,8 +59,28 @@ class Player:
         return self.health > 0
 
     def attack_bonus(self):
-        # extra damage from levelling up, +1 per level after LV1
-        return self.level - 1
+        # extra damage on every hit: +1 per level after LV1, plus whatever the equipped weapon gives
+        bonus = self.level - 1
+        if self.equipped_weapon is not None:
+            bonus += EQUIPMENT[self.equipped_weapon]["attack"]
+        return bonus
+
+    def defense(self):
+        # how much less damage the player takes from each hit, from the equipped armour
+        if self.equipped_armour is None:
+            return 0
+        return EQUIPMENT[self.equipped_armour]["defense"]
+
+    def weapon_special(self):
+        # the equipped weapon's special ability (like "short_circuit"), or None
+        if self.equipped_weapon is None:
+            return None
+        return EQUIPMENT[self.equipped_weapon]["special"]
+
+    def armour_special(self):
+        if self.equipped_armour is None:
+            return None
+        return EQUIPMENT[self.equipped_armour]["special"]
 
     def xp_to_next_level(self):
         if self.level >= MAX_LEVEL:
@@ -82,6 +112,13 @@ class Player:
                 self.armours[i] = armour_name
                 return True
         return False
+
+    def add_item(self, item_name):
+        # adds a healing item, returns False if the player's pockets are full
+        if len(self.items) >= ITEM_SLOTS:
+            return False
+        self.items.append(item_name)
+        return True
 
     def get_route(self):
         # which route the player is on based on kills/spares (neutral, tragedy or blessed)

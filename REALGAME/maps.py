@@ -16,15 +16,24 @@ MAPBIOM = {
     "bh": {"name": "blue helmet",  "encounter": False, "art": [" ⌂ ", "   "]},
     "r":  {"name": "robot corpse", "encounter": True,  "art": ["x x", " x "]},
     "sp": {"name": "save point",   "encounter": False, "art": [" ✦ ", "   "]},
+    "hb": {"name": "old battery",  "encounter": False, "art": [" + ", "   "]},  # healing items show as a +
+    "hk": {"name": "repair kit",   "encounter": False, "art": [" + ", "   "]},
     "c":  {"name": "car wreck",    "encounter": False, "art": ["▄█▄", "o o"]},
     "j":  {"name": "junk pile",    "encounter": False, "art": ["░▒░", "▒░▒"]},
     "tw": {"name": "twinkly",      "encounter": False, "art": ["   ", " ★ "]},  # just the star, on the bottom row like the player
     # the ambush tile looks like normal floor on purpose, so the player doesn't see it coming
     "am": {"name": "floor",        "encounter": False, "art": ["   ", "   "]},
+
+    # crossroads / shop / park / boss room stuff
+    "sk": {"name": "vendy",        "encounter": False, "art": ["┌$┐", "└─┘"]},  # the shopkeeper bro WHAT ARE THESE SYMBOLS
+    "tm": {"name": "terminal",     "encounter": False, "art": ["┌─┐", "└┬┘"]},  # the old data terminal in the park
+    "tr": {"name": "tree",         "encounter": False, "art": [" ▲ ", "▲▲▲"]},
+    "gl": {"name": "gridlock",     "encounter": False, "art": ["[o]", "[o]"]},  # the boss, a giant traffic light robot
+    "bs": {"name": "crosswalk",    "encounter": False, "art": ["= =", "= ="]},  # stepping on this starts the boss fight
 }
 
 # tiles the player can't walk onto (bumping into them does nothing except show a message)
-BLOCKING_TILES = ["w", "tw"]
+BLOCKING_TILES = ["w", "tw", "sk", "tm", "tr", "gl"]
 
 # the character used to represent the player. If this shows up as a box or a question mark in the terminal, just keep the question mark or do like "P" or sum idk
 PLAYER_SYMBOL = "𖨆"
@@ -49,17 +58,17 @@ RUINS_MAP = [
     ["w", "bh", "f", "r", "f", "e"],
     ["e", "f", "f", "f", "f", "e"],
     ["e", "f", "f", "f", "f", "w"],
-    ["w", "f", "f", "f", "f", "w"],
+    ["w", "f", "f", "hb", "f", "w"],
     ["w", "r", "r", "r", "sp", "w"],
     ["w", "w", "w", "w", "w", "w"],
 ]
 
 # the broken highway, where the ambush happens (the "am" column stretches top to bottom so the player can't sneak past it)
 HIGHWAY_MAP = [
-    ["w", "w", "w", "w", "w", "w", "w", "w"],
+    ["w", "w", "w", "w", "w", "w", "e", "w"],
     ["e", "f", "f", "am", "f", "c", "f", "w"],
     ["e", "f", "f", "am", "f", "f", "f", "e"],
-    ["w", "c", "f", "am", "c", "f", "j", "w"],
+    ["w", "c", "f", "am", "c", "hk", "j", "w"],
     ["w", "w", "w", "w", "w", "w", "w", "w"],
 ]
 
@@ -72,12 +81,51 @@ HIDEOUT_MAP = [
     ["w", "w", "e", "w", "w"],
 ]
 
+# the hub, the player can go left (shop), right (park) or up (boss). safe spot with a save point
+CROSSROADS_MAP = [
+    ["w", "w", "w", "e", "w", "w", "w"],
+    ["w", "j", "f", "f", "f", "c", "w"],
+    ["e", "f", "f", "f", "f", "f", "e"],
+    ["w", "f", "sp", "f", "f", "j", "w"],
+    ["w", "w", "w", "e", "w", "w", "w"],
+]
+
+# vendy's shop, the player talks to vendy from the tile below them
+SHOP_MAP = [
+    ["w", "w", "w", "w", "w"],
+    ["w", "j", "sk", "j", "w"],
+    ["w", "f", "f", "f", "e"],
+    ["w", "w", "w", "w", "w"],
+]
+
+# the overgrown park, has the lore terminal and a hidden battery
+PARK_MAP = [
+    ["w", "w", "w", "w", "w", "w"],
+    ["w", "tr", "f", "tm", "tr", "w"],
+    ["e", "f", "f", "f", "f", "w"],
+    ["w", "f", "tr", "f", "hb", "w"],
+    ["w", "w", "w", "w", "w", "w"],
+]
+
+# gridlock's intersection. walking onto the crosswalk starts the boss fight
+BOSS_MAP = [
+    ["w", "w", "w", "w", "w"],
+    ["w", "f", "gl", "f", "w"],
+    ["w", "bs", "bs", "bs", "w"],
+    ["w", "f", "f", "f", "w"],
+    ["w", "w", "e", "w", "w"],
+]
+
 # every map in the game, by name. main.py copies this so maps can change (items picked up etc) without breaking the originals
 MAPS = {
     "lab": LAB_MAP,
     "ruins": RUINS_MAP,
     "highway": HIGHWAY_MAP,
     "hideout": HIDEOUT_MAP,
+    "crossroads": CROSSROADS_MAP,
+    "shop": SHOP_MAP,
+    "park": PARK_MAP,
+    "boss": BOSS_MAP,
 }
 
 # how each map gets described in door messages, e.g. "*The way to the ruins."
@@ -86,6 +134,10 @@ MAP_NAMES = {
     "ruins": "the ruins",
     "highway": "the highway",
     "hideout": "Twinkly's hideout",
+    "crossroads": "the crossroads",
+    "shop": "Vendy's shop",
+    "park": "the overgrown park",
+    "boss": "the old intersection",
 }
 
 # chance of a random battle each time the player steps onto a floor tile ("f"), per map
@@ -93,6 +145,7 @@ MAP_NAMES = {
 ENCOUNTER_RATES = {
     "ruins": 0.08,    # 8% per step
     "highway": 0.05,  # 5% per step
+    "park": 0.06,     # 6% per step
 }
 
 # every door in the game: (map, x, y) of the door -> (map it leads to, x, y the player arrives at)
@@ -108,6 +161,14 @@ DOORS = {
     ("highway", 0, 2): ("ruins", 4, 2),
     ("highway", 7, 2): ("hideout", 2, 3),
     ("hideout", 2, 4): ("highway", 6, 2),
+    ("highway", 6, 0): ("crossroads", 3, 3),
+    ("crossroads", 3, 4): ("highway", 6, 1),
+    ("crossroads", 0, 2): ("shop", 3, 2),
+    ("shop", 4, 2): ("crossroads", 1, 2),
+    ("crossroads", 6, 2): ("park", 1, 2),
+    ("park", 0, 2): ("crossroads", 5, 2),
+    ("crossroads", 3, 0): ("boss", 2, 3),
+    ("boss", 2, 4): ("crossroads", 3, 1),
 }
 
 

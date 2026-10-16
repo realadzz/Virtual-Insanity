@@ -7,7 +7,7 @@ TWINKLY = {
     "maxhealth": 15,
     "health": 15,
     "heal_range": (4, 7),  # how much "Heal" restores
-    # twinkly never attacks, he only heals or calms enemies, so he can't mess up the player's route and because hes a "pacifist"
+    # twinkly never attacks, he only heals or calms enemies, so he can't mess up the player's route and because hes a "pacifist" heh thats pretty funny its almost as if he isnt wait what
 }
 
 

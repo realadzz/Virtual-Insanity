@@ -5,7 +5,7 @@
 import time
 
 # how many letters appear per second. 0 turns the animation off completely
-LETTERS_PER_SECOND = 30
+LETTERS_PER_SECOND = 0
 
 # set this to True for a short extra pause after . ! ? like in undertale
 PAUSE_ON_PUNCTUATION = False

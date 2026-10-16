@@ -96,10 +96,40 @@ AMBUSH_ENEMIES = [
 ]
 
 
+# the mini boss at the end of the demo. a giant traffic robot still directing traffic in a city with no cars
+# boss only stuff (combat.py checks for these, normal enemies just don't have them):
+#   "boss": True          -> bigger rewards, and the player can't flee
+#   "mercy_needed": 5     -> the right act (or twinkly's shine) has to happen 5 times before he can be spared, normal enemies only need 1
+#   "charge_every": 3     -> every 3rd turn he charges up instead of attacking, then does a huge hit the turn after
+GRIDLOCK = {
+    "name": "GRIDLOCK",
+    "health": 95,
+    "min_attack": 3,
+    "max_attack": 7,
+    "description": "A huge traffic control robot. It's been directing traffic at this intersection for years. There are no cars.",
+    "boss": True,
+    "proper_name": True,  # it's a name, so the game says "GRIDLOCK attacks" not "The GRIDLOCK attacks"
+    "mercy_needed": 5,
+    "charge_every": 3,
+    "charge_attack": (11, 15),
+    "charge_text": "GRIDLOCK's lights all turn red at once. It's charging something big!",
+    "acts": [
+        {"name": "Wait", "spareable": True,
+         "text": "You stand at the edge of the crossing and wait for the green light, like a good pedestrian."},
+        {"name": "Jaywalk", "spareable": False,
+         "text": "You run across the road without waiting. GRIDLOCK's sirens go off. HE IS FURIOUS."},
+    ],
+}
+
+
 def make_enemy(template, unbeatable=False):
     enemy = dict(template)  # copy so each enemy tracks its own hp
     enemy["spareable"] = False  # becomes True once the right act is used on it
     enemy["unbeatable"] = unbeatable
+    enemy["shorted"] = 0  # turns of short circuit left (from the glass shard)
+    enemy["mercy"] = 0  # how many times the right act has been done, for enemies that need it more than once
+    enemy["turns"] = 0  # how many turns it's had, used for the boss's charge attack
+    enemy["charging"] = False
     return enemy
 
 
@@ -107,6 +137,10 @@ def spawn_enemies():
     # 10% chance of 2 enemies, otherwise just 1
     enemy_count = 2 if random.random() < 0.10 else 1
     return [make_enemy(random.choice(ENEMY_TYPES)) for _ in range(enemy_count)]
+
+
+def spawn_gridlock():
+    return [make_enemy(GRIDLOCK)]
 
 
 def spawn_ambush_enemies(unbeatable=True):
