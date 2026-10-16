@@ -57,8 +57,8 @@ def ambush(player):
 def rescue_cutscene(player):
     print()
     narrate("*Just as things start to look hopeless, a bright flash of light cuts through the air.")
-    narrate("*A small android lands between you and the machines. Its round head glows like a star.")
-    say("???", "Hey! Over here, you two! Bet you can't catch me!")
+    narrate("*A small android lands between you and the machines. Its star shaped head flashes the machines.")
+    say("???", "Hey! Over here, you two! Watch this!")
     narrate("*Another flash. The machines stumble, then collapse, twitching.")
     say("???", "That won't hold them for long. Come on, follow me! Quick!")
     narrate("*You follow the small android along the highway, until it slips through a crack in one of the huge concrete pillars.")
@@ -70,7 +70,7 @@ def rescue_cutscene(player):
 def twinkly_introduction(player):
     # only plays the first time the player talks to twinkly
     name = player.name.title()
-    say("???", "Phew! We should be safe in here. Those two are way too big to fit through the gap.")
+    say("???", "Phew! We should be safe in here. Those two are way too big to fit through the gap, not that they'd find this spot anyways.")
     say("???", "Oh! Where are my manners. I'm Twinkly, Twinkly the star!")
     say("Twinkly", "I used to light up the streets at night. Guide anyone who got lost, keep people safe... that kind of thing.")
     say("Twinkly", "Not that there's anyone left to guide nowadays..")
@@ -100,10 +100,10 @@ def talk_to_twinkly(player, flags):
         print()
 
         if choice == "1":
-            say("Twinkly", "Like I said, I'm Twinkly! A guardian android. Well... was. My job was keeping the city safe at night.")
+            say("Twinkly", "Like I said, I'm Twinkly! I'm a guardian android. Well... was. My job was keeping the city safe at night.")
             say("Twinkly", "I still try to do it, even if there's nobody around to protect anymore. Old habits!")
         elif choice == "2":
-            say("Twinkly", "This is Tarnia! Or... what's left of it.")
+            say("Twinkly", "This is the great city of Tarnia! Or... what's left of it.")
             say("Twinkly", "It used to be the brightest city around. Hover-trains, holograms everywhere, robots for just about everything.")
             say("Twinkly", "Then the humans disappeared, and nature kind of... moved back in.")
         elif choice == "3":
@@ -115,7 +115,7 @@ def talk_to_twinkly(player, flags):
             narrate("*You ask Twinkly if you're the only human left.")
             say("Twinkly", "...")
             say("Twinkly", "Honestly? I don't know.")
-            say("Twinkly", "I haven't seen a human in a long, long time. But hey, you're here, aren't you? So maybe there's hope!")
+            say("Twinkly", "I haven't seen a human in a long, long time. But hey, you're here, aren't you? So maybe there's hope after all!")
         elif choice == "5":
             say("Twinkly", "Hmm... you can't stay in here forever. And no offence, but you won't last long out there alone.")
             say("Twinkly", "So how about I come with you? I know these streets better than anyone!")
