@@ -5,7 +5,7 @@
 import time
 
 # how many letters appear per second. 0 turns the animation off completely
-LETTERS_PER_SECOND = 0
+LETTERS_PER_SECOND = 90
 
 # set this to True for a short extra pause after . ! ? like in undertale
 PAUSE_ON_PUNCTUATION = False
@@ -42,6 +42,19 @@ def type_print(text, end="\n"):
             next_letter_time += PUNCTUATION_PAUSE
         wait_until(next_letter_time)
     print(end, end="", flush=True)
+
+
+# seconds between each line when ascii art builds up on screen
+ART_LINE_DELAY = 0.04
+
+
+def reveal_art(art):
+    # prints big ascii art one line at a time from top to bottom, looks way cooler than it just appearing
+    # (if the typewriter's turned off, the art just shows up instantly too)
+    for line in art.strip("\n").splitlines():
+        print(line, flush=True)
+        if LETTERS_PER_SECOND > 0:
+            time.sleep(ART_LINE_DELAY)
 
 
 def type_input(text):

@@ -1,5 +1,5 @@
 # shop
-# vendy's shop. vendy is an old vending machine that somehow woke up and STILL just wants to sell stuff
+# vendy's shop. vendy is an old vending machine that somehow woke up and STILL just wants to sell stuff lmao
 # prices are in platinum. to add something to the shop, just add a line to SHOP_STOCK
 
 from items import HEALING_ITEMS, EQUIPMENT, item_name, equipment_summary
@@ -34,7 +34,7 @@ def buy(player, item, price):
         say("Vendy", "Sorry! That one's out of stock. You bought the last one, remember?")
         return
     if player.platinum < price:
-        say("Vendy", "ERROR: INSUFFICIENT FUNDS. ...that means you're too broke, pal.")
+        say("Vendy", "ERROR: INSUFFICIENT FUNDS. ...that means you're too broke, friend.")
         return
 
     if item in HEALING_ITEMS:
@@ -45,7 +45,7 @@ def buy(player, item, price):
         added = player.add_armour(item)
 
     if not added:
-        say("Vendy", "Your pockets are full! Use some of that good stuff up first.")
+        say("Vendy", "Your pockets are full! Use some of that stuff first.")
         return
 
     player.platinum -= price
@@ -80,7 +80,7 @@ def vendy_introduction(player):
         say("Vendy", "W-WELCOME, VALUED CUSTOMER! P-please don't break me. Just take what you want. And pay. Please pay.")
     else:
         say("Vendy", "WELCOME, VALUED CUSTOMER! You're my first customer in... ERROR: DATE NOT FOUND.")
-        say("Vendy", "Name's Vendy! I sell snacks! Well. I used to sell snacks. Now I sell whatever I can find lying around. God, I miss those times..")
+        say("Vendy", "Name's Vendy! I sell snacks! Well. I used to sell snacks. Now I sell whatever I can find lying around.")
 
 
 def talk_to_vendy(player, flags):

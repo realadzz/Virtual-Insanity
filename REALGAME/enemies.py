@@ -109,6 +109,7 @@ GRIDLOCK = {
     "description": "A huge traffic control robot. It's been directing traffic at this intersection for years. There are no cars.",
     "boss": True,
     "proper_name": True,  # it's a name, so the game says "GRIDLOCK attacks" not "The GRIDLOCK attacks"
+    "art": "gridlock",    # his ascii pictures in the boss art py file
     "mercy_needed": 5,
     "charge_every": 3,
     "charge_attack": (11, 15),

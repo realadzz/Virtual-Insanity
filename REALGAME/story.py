@@ -4,7 +4,8 @@
 from combat import start_battle
 from enemies import spawn_ambush_enemies, spawn_gridlock
 from allies import create_twinkly
-from text import type_print
+from text import type_print, reveal_art
+from boss_art import BOSS_ART
 
 # on the tragedy route, the player needs to be at least this LV when they reach the ambush to be able to win it
 TRAGEDY_AMBUSH_LV = 4
@@ -147,7 +148,7 @@ def boss_fight(player):
     say("GRIDLOCK", "THE PENALTY FOR JAYWALKING IS... DELETION.")
     if has_twinkly(player):
         say("Twinkly", "Uh oh. That's GRIDLOCK. He's been stuck on red for, like, ten years.")
-        say("Twinkly", "Maybe if we play by his rules he'll calm down? Or... we could fight him. I think we should try to get on his good side, to be honest..")
+        say("Twinkly", "Maybe if we play by his rules he'll calm down? Or... we could just fight him. Your call!")
     elif player.get_route() == "tragedy":
         narrate("*GRIDLOCK's lights flicker for a moment, almost like it's nervous.")
     return start_battle(player, None, enemies=spawn_gridlock())
@@ -158,6 +159,7 @@ def demo_ending(player, result):
     print()
     if result == "spared":
         narrate("*GRIDLOCK's lights slowly fade from red... to yellow... to green.")
+        reveal_art(BOSS_ART["gridlock"]["spared"])
         say("GRIDLOCK", "...YOU MAY... CROSS.")
         say("GRIDLOCK", "IT HAS BEEN A LONG TIME SINCE ANYONE WAITED FOR THE LIGHT. THANK YOU, PEDESTRIAN.")
         narrate("*GRIDLOCK steps aside. For the first time in years, the intersection is open.")
@@ -182,18 +184,18 @@ def demo_ending(player, result):
 
 
 def read_terminal(player):
-    # the lore terminal in the park. hints at what happened to the humans without saying too much
+    # the lore terminal in the park. hints at what happened to the humans, without saying too much
     narrate("*An old public terminal. The screen is cracked, but it still turns on when you touch it.")
     narrate("*Most of the files are corrupted. A few logs are still readable.")
     print()
     narrate("> LOG 0412: The new city system is amazing. It does EVERYTHING. I haven't cooked in months lol")
-    narrate("> LOG 0587: Everyone's talking about the ORIGIN update. It'll make life so much better for us!")
-    narrate("> LOG 0601: Applications for the [ERROR] programme are now available. Honestly, I doubt anyone would want to miss out on such an opportunity.")
+    narrate("> LOG 0587: Everyone's talking about the ORIGIN update. Apparently it'll make the city run itself completely.")
+    narrate("> LOG 0601: Applications for the Long Sleep programme are now open. They say it's just a nap while the city upgrades.")
     narrate("> LOG 0602: Signed up. See you on the other side, Tarnia.")
     narrate("> LOG 0603: ")
     narrate("> LOG 0603: ")
     narrate("> LOG 0603: ERROR. NO FURTHER LOGS FOUND.")
     print()
     if has_twinkly(player):
-        say("Twinkly", "Hmm... that programme thing.. it seems pretty important. We should find out what is going on.")
+        say("Twinkly", "The Long Sleep...? I've never heard of that. Huh.")
 

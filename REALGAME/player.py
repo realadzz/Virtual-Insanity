@@ -5,7 +5,7 @@ from items import EQUIPMENT
 
 MAX_LEVEL = 20
 HEALTH_PER_LEVEL = 4  # max hp gained every level up
-ITEM_SLOTS = 8  # how many healing items the player can carry at once
+ITEM_SLOTS = 8  # how many healing items the player can carry at once, tbh id say this is a balanced number but idk depends on player feedback ig
 
 
 def xp_needed_for(level):

@@ -6,7 +6,8 @@ import random
 from enemies import spawn_enemies
 from allies import is_up, damage_ally, heal_ally
 from items import HEALING_ITEMS, item_name
-from text import type_print
+from text import type_print, reveal_art
+from boss_art import BOSS_ART
 
 # ACT options now live on each enemy in enemies.py (Check is always first, then that enemy's own acts)
 
@@ -89,6 +90,12 @@ def start_battle(player, current_map, enemies=None):
     scripted = any(enemy["unbeatable"] for enemy in enemies)
     boss_fight = any(enemy.get("boss") for enemy in enemies)  # checked now, cause the list is empty by the end
     turns_taken = 0
+
+    # bosses with ascii art get shown off at the start of the fight
+    for enemy in enemies:
+        if enemy.get("art"):
+            print()
+            reveal_art(BOSS_ART[enemy["art"]]["normal"])
 
     type_print("\n*A battle begins!*")
     for enemy in enemies:
@@ -455,18 +462,21 @@ def enemy_turn(player, enemies):
             continue
         if enemy.get("charge_every") and enemy["turns"] % enemy["charge_every"] == 0:
             enemy["charging"] = True
+            if enemy.get("art"):
+                print()
+                reveal_art(BOSS_ART[enemy["art"]]["charging"])  # the charging picture, all lights on
             type_print(f"*{enemy['charge_text']}*")
             type_print("*(It'll hit hard next turn... maybe heal up?)*")
             continue
 
         damage = random.randint(enemy["min_attack"], enemy["max_attack"])
 
-        # each enemy picks someone to attack the player, or any ally that's still standing
+        # each enemy picks someone to attack: the player, or any ally that's still standing
         targets = ["player"] + [ally for ally in player.allies if is_up(ally)]
         target = random.choice(targets)
 
         if target == "player":
-            # the blue helmet's special is sometimes the attack just bounces off this is so peak lol howd i do this
+            # the blue helmet's special: sometimes the attack just bounces off
             if player.armour_special() == "deflect" and random.random() < DEFLECT_CHANCE:
                 type_print(f"*{the(enemy)} attacks, but your Blue Helmet flashes blue! The attack bounces right off!*")
                 continue

@@ -1,5 +1,5 @@
 # menus
-# the [Q] inventory and [T] stats screens kept here so main doesn't get cluttered
+# the [Q] inventory and [T] stats screens r kept here so main doesn't get cluttered
 
 from items import HEALING_ITEMS, EQUIPMENT, item_name, equipment_summary
 from text import type_print

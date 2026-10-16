@@ -1,6 +1,8 @@
 # game introoo
 # only put it here so that main isn't too cluttered tbh
 
+import sys
+
 from text import type_print, type_input
 
 
@@ -23,7 +25,7 @@ def get_username():
 
     while username in invalid_names or username.strip() == "":
         if username == "gaster":
-            type_print("Error code 403: Please try a different name.")
+            sys.exit()  # game closes because gaster needs more feats
         elif username == "vzyx":
             type_print(". . .")
         elif username == "chara":

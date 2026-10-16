@@ -25,7 +25,7 @@ MAPBIOM = {
     "am": {"name": "floor",        "encounter": False, "art": ["   ", "   "]},
 
     # crossroads / shop / park / boss room stuff
-    "sk": {"name": "vendy",        "encounter": False, "art": ["┌$┐", "└─┘"]},  # the shopkeeper bro WHAT ARE THESE SYMBOLS
+    "sk": {"name": "vendy",        "encounter": False, "art": ["┌$┐", "└─┘"]},  # the shopkeeper, a vending machine lol
     "tm": {"name": "terminal",     "encounter": False, "art": ["┌─┐", "└┬┘"]},  # the old data terminal in the park
     "tr": {"name": "tree",         "encounter": False, "art": [" ▲ ", "▲▲▲"]},
     "gl": {"name": "gridlock",     "encounter": False, "art": ["[o]", "[o]"]},  # the boss, a giant traffic light robot
