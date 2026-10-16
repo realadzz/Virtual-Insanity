@@ -15,7 +15,7 @@ def ask_yes_no():
 
 def pickup_glass_shard(player):
     type_print("*There is a glass shard on the ground. It has the shape of a small blade.")
-    type_print("Take it?")
+    type_print("*Take it?")
     if ask_yes_no() == "yes":
         type_print("*You picked up the glass shard. Try to not get a cut.")
         player.add_weapon("glass_shard")
