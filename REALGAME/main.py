@@ -4,6 +4,8 @@
 import copy
 import os
 
+import time
+
 from player import Player
 from maps import (MAPS, MAP_NAMES, DOORS, BLOCKING_TILES, tile_code, get_bounds,
                   find_tile, find_adjacent_tile, render_map)
@@ -87,10 +89,10 @@ def handle_door(player, current_map_name, flags):
         return current_map_name  # the player didn't go through so nothing changes
 
     if current_map_name == "lab" and not flags["left_lab"]:
-        type_print("*You stepped out of the lab, and continued to walk around.")
+        type_print("*You stepped out of the lab.")
         type_print("You look outside, finally getting a breath of fresh air. However... something is wrong.")
         type_print("Despite not remembering much, you remember there once being an amazing, flourishing city. You can't seem to remember its name though..")
-        type_print("Regardless, this city is now different. It is destroyed, overrun by nature. Vines cling onto skyscrapers, flowers bloom on windows and you can smell the fresh air.")
+        type_print("Regardless, this city is now different. It is destroyed, overrun by nature. Vines cling onto skyscrapers, flowers bloom on windows and the scent of flowers fills the air.")
         flags["left_lab"] = True
     else:
         type_print(f"*You head to {MAP_NAMES[dest_map]}.")
@@ -105,7 +107,7 @@ def describe_tile(code):
     elif code == "r":
         type_print("*You notice a bunch of robots under some debris. They appear to be defunct..")
     elif code == "c":
-        type_print("*A car, rusted and crushed flat. Moss is growing out of the steering wheel.")
+        type_print("*A car, rusted and crushed flat. Moss is growing out of the steering wheel, and vines cover the wheels.")
     elif code == "j":
         type_print("*A pile of scrap. Wires, bolts, a cracked screen. Nothing useful.")
 
@@ -204,7 +206,8 @@ def run_game():
         current_map = world[current_map_name]
 
         if move == "0":
-            type_print("*See you soon.")
+            type_print("*See you soon...")
+            time.sleep(1)
             break
         elif move == "q":
             show_inventory(player)
@@ -225,7 +228,7 @@ def run_game():
                     tx, ty = twinkly_position
                     current_map[ty][tx] = "f"  # twinkly follows the player now, so he leaves his spot
                     player.follower_pos = (tx, ty)  # and starts following from where he was standing
-                    type_print("*Thank you for playing this early build of Virtual Insanity! More of Tarnia is coming soon. However, you should still probably be able to use twinkly in battles idrk go check actually please\n")
+                    type_print("*Thank you for playing this early build of Virtual Insanity! More of Twinkly and Tarnia is coming soon. However, you should still probably be able to use twinkly in battles idrk go check actually please\n")
                 draw(world, current_map_name, player)
             else:
                 print("*There's nothing to interact with here.")
@@ -257,7 +260,7 @@ def run_game():
             if flags["blue_helmet_taken"]:
                 current_map[player.y][player.x] = "f"
         elif code == "sp":
-            type_print("*A strange light flashes before you. [E] to interact.")
+            type_print("*A calming light shines before you. [E] to interact.")
         elif code == "e":
             new_map_name = handle_door(player, current_map_name, flags)
             if new_map_name != current_map_name:
