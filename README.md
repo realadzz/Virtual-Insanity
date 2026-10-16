@@ -2,17 +2,25 @@
 It's what we're living in ohhhhhh yeahhhh but I guess it's alright
 
 
-As of writing this on 14/10/2026, this game is an INCREDIBLY heavy work in progress. The game currently features a movement system, a combat/battle system, and a work in progress "route" system (which cannot be interacted with in any way).
+As of writing this on 16/10/2026, this game is still a work in progress. The game currently features things such as:
+
+-A movement system with ASCII maps.
+
+-A combat system with undertale-inspired options (FIGHT, ACT, ITEM, MERCY), with ACTs changing based on the enemies
+
+-Different items, weapons and armour that can be used and equipped.
+
+-2 different NPCs.
+
+-A short story with "cutscenes", though these cutscenes are just text.
+
+-A shop, which the player can buy from.
+
+-A mini boss to end the demo off.
+
+-A "route" system. Reach LVL 4 before leaving the ruins, and this will make more sense.
+
 PLANS:
+-Make the game an actual game, and not just a demo.
 
--Continue making maps.
-
--Continue making enemies.
-
--Add ASCII art to the game.
-
--Add music and sound effects to the game.
-
--Fix up small bugs and nitpicks
-
--Get Jacky to add me on steam.
+-Remake the mini bosses ASCII in the future.
