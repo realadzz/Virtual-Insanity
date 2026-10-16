@@ -25,7 +25,7 @@ PLAYER_DAMAGE_RANGE = (4, 6)
 CRIT_CHANCE = 0.10      # 10% chance
 CRIT_MULTIPLIER = 2
 
-# for unbeatable (scripted) fights: the battle gets interrupted once the player has
+# for unwinnable (scripted) fights: the battle gets interrupted once the player has
 # taken this many turns, or their hp drops this low, whichever happens first
 RESCUE_AFTER_TURNS = 4
 RESCUE_AT_HP = 6
@@ -43,7 +43,7 @@ def wake_up_allies(player):
     for ally in player.allies:
         if not is_up(ally):
             ally["health"] = 1
-            type_print(f"*{ally['name']} slowly gets back up. He's barely holding together.*")
+            type_print(f"*{ally['name']} slowly gets back up, barely holding together.*")
 
 
 def start_battle(player, current_map, enemies=None):
