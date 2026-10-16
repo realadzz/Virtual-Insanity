@@ -6,6 +6,7 @@ As of writing this on 14/10/2026, this game is an INCREDIBLY heavy work in progr
 PLANS:
 
 -Continue making maps.
+
 -Continue making enemies.
 
 -Add ASCII art to the game.
