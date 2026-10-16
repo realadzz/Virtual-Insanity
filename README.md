@@ -16,7 +16,7 @@ As of writing this on 16/10/2026, this game is still a work in progress. The gam
 
 -A shop, which the player can buy from.
 
--A mini boss to end the demo off.
+-A mini boss to end the demo off, who has some ASCII (even if its not too great yet)
 
 -A "route" system. Reach LVL 4 before leaving the ruins, and this will make more sense.
 
