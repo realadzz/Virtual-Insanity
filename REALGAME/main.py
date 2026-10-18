@@ -75,27 +75,43 @@ def move_player(player, direction, grid):
     player.x, player.y = new_x, new_y
 
 
-def handle_door(player, current_map_name, flags):
-    # handles what happens when the player steps on a door, returns the map the player ends up on
-    destination = DOORS.get((current_map_name, player.x, player.y))
+def door_destination(player, current_map_name):
+    # where the door the player's standing on leads, as (map, x, y), or None if it's not in DOORS
+    return DOORS.get((current_map_name, player.x, player.y))
+
+
+def door_is_locked(dest_map, flags):
+    # the hideout stays shut until twinkly's rescued the player
+    return dest_map == "hideout" and not flags["rescued"]
+
+
+def describe_door(player, current_map_name, flags):
+    # runs when the player steps onto a door. it just says where it goes, going through is [E] or walking into it
+    destination = door_destination(player, current_map_name)
+    if destination is None:
+        return
+    dest_map = destination[0]
+
+    if door_is_locked(dest_map, flags):
+        type_print("*There's a crack in one of the concrete highway pillars. It's pitch black inside.")
+        type_print("*Something tells you not to go in alone.")
+    elif current_map_name == "lab" and not flags["left_lab"]:
+        type_print("*There is a door here. It appears to be unlocked. [E] to go through.")
+    else:
+        type_print(f"*The way to {MAP_NAMES[dest_map]}. [E] to go through.")
+
+
+def go_through_door(player, current_map_name, flags):
+    # actually takes the player through the door they're standing on, returns the map they end up on
+    destination = door_destination(player, current_map_name)
     if destination is None:
         type_print("*The door won't budge.")  # safety net in case a door was forgotten in DOORS
         return current_map_name
     dest_map, dest_x, dest_y = destination
 
-    if dest_map == "hideout" and not flags["rescued"]:
-        type_print("*There's a crack in one of the concrete highway pillars. It's pitch black inside.")
-        type_print("*Something tells you not to go in alone.")
+    if door_is_locked(dest_map, flags):
+        type_print("*You peek into the darkness, then decide against it.")
         return current_map_name
-
-    if current_map_name == "lab" and not flags["left_lab"]:
-        type_print("*There is a door here. It appears to be unlocked.")
-    else:
-        type_print(f"*The way to {MAP_NAMES[dest_map]}.")
-
-    choice = input("-> ")
-    if choice.lower() != "e":
-        return current_map_name  # the player didn't go through so nothing changes
 
     if current_map_name == "lab" and not flags["left_lab"]:
         type_print("*You stepped out of the lab.")
@@ -115,6 +131,22 @@ def handle_door(player, current_map_name, flags):
 
     player.x, player.y = dest_x, dest_y
     return dest_map
+
+
+def walking_into_door(player, direction, grid):
+    # true if the player's standing on a door and walks "into" it, so off the edge of the map or into a wall
+    # (doors are always on the edge of a map, so that's the way through)
+    if tile_code(grid, player.x, player.y) != "e":
+        return False
+    steps = {"w": (0, -1), "s": (0, 1), "a": (-1, 0), "d": (1, 0)}
+    if direction not in steps:
+        return False
+    dx, dy = steps[direction]
+    new_x, new_y = player.x + dx, player.y + dy
+    max_x, max_y = get_bounds(grid)
+    if not (0 <= new_x <= max_x and 0 <= new_y <= max_y):
+        return True
+    return tile_code(grid, new_x, new_y) in BLOCKING_TILES
 
 
 def describe_tile(code):
@@ -245,6 +277,12 @@ def run_game():
             next_to_terminal = find_adjacent_tile(current_map, player.x, player.y, "tm") is not None
             if here == "sp":
                 save = use_save_point(player, world, current_map_name, flags)
+            elif here == "e":
+                new_map_name = go_through_door(player, current_map_name, flags)
+                if new_map_name != current_map_name:
+                    current_map_name = new_map_name
+                    player.follower_pos = None  # the ally catches up once the player takes a step
+                    draw(world, current_map_name, player, clear=True)
             elif here in PICKUPS:
                 if take_pickup(player, here):
                     current_map[player.y][player.x] = "f"  # the item's gone from the map once it's taken
@@ -264,6 +302,15 @@ def run_game():
                 draw(world, current_map_name, player)
             else:
                 print("*There's nothing to interact with here.")
+            continue
+
+        # standing on a door and walking into it (off the edge of the map) goes through it, same as pressing [E]
+        if walking_into_door(player, move, current_map):
+            new_map_name = go_through_door(player, current_map_name, flags)
+            if new_map_name != current_map_name:
+                current_map_name = new_map_name
+                player.follower_pos = None
+                draw(world, current_map_name, player, clear=True)
             continue
 
         old_position = (player.x, player.y)
@@ -288,11 +335,7 @@ def run_game():
         elif code == "sp":
             type_print("*A calming light shines before you. [E] to interact.")
         elif code == "e":
-            new_map_name = handle_door(player, current_map_name, flags)
-            if new_map_name != current_map_name:
-                current_map_name = new_map_name
-                player.follower_pos = None  # the ally catches up once the player takes a step
-                draw(world, current_map_name, player)
+            describe_door(player, current_map_name, flags)
         elif code == "am" and not flags["ambush_done"]:
             result = ambush(player)
             if result in ("rescued", "won", "spared"):
