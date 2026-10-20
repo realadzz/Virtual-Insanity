@@ -143,7 +143,7 @@ def boss_fight(player):
     # the mini boss at the end of the demo. returns how the battle ended
     print()
     narrate("*You step onto the old crosswalk. The ground hums.")
-    narrate("*In front of you, a gigantic traffic light slowly turns to face you. It has arms.")
+    narrate("*In front of you, a gigantic traffic light slowly turns to face you. Its massive red light blinds you for a moment.")
     say("GRIDLOCK", "PEDESTRIAN DETECTED. YOU ARE CROSSING ON A RED LIGHT.")
     say("GRIDLOCK", "THE PENALTY FOR JAYWALKING IS... DELETION.")
     if has_twinkly(player):
