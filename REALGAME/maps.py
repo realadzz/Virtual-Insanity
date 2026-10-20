@@ -145,7 +145,7 @@ MAP_NAMES = {
 ENCOUNTER_RATES = {
     "ruins": 0.08,    # 8% per step
     "highway": 0.05,  # 5% per step
-    "park": 0.06,     # 6% per step
+    "park": 0.05,     # 5% per step
 }
 
 # every door in the game: (map, x, y) of the door -> (map it leads to, x, y the player arrives at)
