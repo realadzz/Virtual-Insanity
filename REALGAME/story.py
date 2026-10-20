@@ -49,8 +49,8 @@ def ambush(player):
 
     if tragedy and result == "won":
         print()
-        narrate("*The machines fall apart at your feet. They are now useless scrap, left to wither away for good.")
-        narrate("*Nobody came to help..")
+        narrate("*The machines fall apart at your feet. They are now useless scrap, left to rust and wither away for good.")
+        narrate("*Nobody came to help you.")
         narrate("*Nobody needed to.")
     return result
 
@@ -58,7 +58,7 @@ def ambush(player):
 def rescue_cutscene(player):
     print()
     narrate("*Just as things start to look hopeless, a bright flash of light cuts through the air.")
-    narrate("*A slim, lanky android lands between you and the machines. Its star shaped head flashes the machines.")
+    narrate("*A lanky android lands between you and the machines. Its star shaped head flashes the machines.")
     say("???", "Hey! Over here, you two! Watch this!")
     narrate("*Another flash. The machines stumble, then collapse, twitching.")
     say("???", "That won't hold them for long. Come on, follow me! Quick!")
@@ -72,7 +72,7 @@ def twinkly_introduction(player):
     # only plays the first time the player talks to twinkly
     name = player.name.title()
     say("???", "Phew! We should be safe in here. Those two are way too big to fit through the gap, not that they'd find this spot anyways.")
-    say("???", "Oh! Where are my manners. I'm Twinkly, Twinkly the star!")
+    say("???", "Oh! Where are my manners? I'm Twinkly, Twinkly the star!")
     say("Twinkly", "I used to light up the streets at night. Guide anyone who got lost, keep people safe... that kind of thing.")
     say("Twinkly", "Not that there's anyone left to guide nowadays..")
     say("Twinkly", "Anyway! Who are you? Where'd you come from? And why were you just strolling down the highway like that??")
@@ -109,9 +109,9 @@ def talk_to_twinkly(player, flags):
             say("Twinkly", "Then the humans disappeared, and nature kind of... moved back in.")
         elif choice == "3":
             say("Twinkly", "The truth is, most machines out there aren't evil, they're just scared.")
-            say("Twinkly", "With nobody left to fix them up, they'll do anything to keep running. Even scrap each other for parts.")
+            say("Twinkly", "With nobody left to fix them up, they'll do anything to keep running. Even scrap each other for parts if it means they get to live on for longer.")
             say("Twinkly", "And lately, some of them have been acting... strange. Machines whisper about something called the Origin.")
-            say("Twinkly", "Nobody really knows what it is. But if you were to ask me, I'd say it's nothing good, that's for sure.")
+            say("Twinkly", "Nobody really knows what it is. But if you were to ask me, it's probably nothing good, that's for sure.")
         elif choice == "4":
             narrate("*You ask Twinkly if you're the only human left.")
             say("Twinkly", "...")
@@ -150,7 +150,7 @@ def boss_fight(player):
         say("Twinkly", "Uh oh. That's GRIDLOCK. He's been stuck on red for, like, ten years.")
         say("Twinkly", "Maybe if we play by his rules he'll calm down? I mean, we could fight him, but let's try not to!")
     elif player.get_route() == "tragedy":
-        narrate("*GRIDLOCK's lights flicker for a moment, almost like he's nervous.")
+        narrate("*GRIDLOCK's lights flicker for a moment, almost as if he is nervous. They stop shortly after, though.")
     return start_battle(player, None, enemies=spawn_gridlock())
 
 
@@ -197,5 +197,5 @@ def read_terminal(player):
     narrate("> LOG 0603: ERROR. NO FURTHER LOGS FOUND.")
     print()
     if has_twinkly(player):
-        say("Twinkly", "Well that's just great, errors for all of the actually important information.. well, I guess we better hurry and find out what happened, right?")
+        say("Twinkly", "Well that's just great, errors for all of the important information.. well, I guess we better hurry and find out what happened, right?")
 
