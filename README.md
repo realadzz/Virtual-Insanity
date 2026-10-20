@@ -26,3 +26,5 @@ PLANS:
 -Remake the mini bosses ASCII in the future.
 
 -Actually, make more ASCII for characters.
+
+-Maybe have sound effects?
