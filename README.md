@@ -24,3 +24,5 @@ PLANS:
 -Make the game an actual game, and not just a demo.
 
 -Remake the mini bosses ASCII in the future.
+
+-Actually, make more ASCII for characters.
