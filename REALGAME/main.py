@@ -125,8 +125,8 @@ def go_through_door(player, current_map_name, flags):
     # first time reaching the crossroads, describe the place
     if dest_map == "crossroads" and not flags["seen_crossroads"]:
         type_print("*You climb up a broken off-ramp and find yourself at an old crossroads.")
-        type_print("*To the left, a shop sign flickers. To the right, trees have taken over a park.")
-        type_print("*Straight ahead, something huge is blinking red.")
+        type_print("*To the left, a small shop sign flickers. To the right, there is a small, abandoned park.")
+        type_print("*Straight ahead, a bright red light flashes..")
         flags["seen_crossroads"] = True
 
     player.x, player.y = dest_x, dest_y
@@ -151,9 +151,9 @@ def walking_into_door(player, direction, grid):
 
 def describe_tile(code):
     if code == "d":
-        type_print("*There are some desks here. They are all covered in dust, and have scattered papers all over. They seem to be unimportant.")
+        type_print("*There are some desks here. They are all covered in dust, and have papers scattered all over. They seem to be unimportant.")
     elif code == "r":
-        type_print("*You notice a bunch of robots under some debris. They appear to be defunct..")
+        type_print("*You notice a bunch of robots under some debris. They appear to be defunct.. until!")
     elif code == "c":
         type_print("*A car, rusted and crushed flat. Moss is growing out of the steering wheel, and vines cover the wheels.")
     elif code == "j":
@@ -215,7 +215,7 @@ def start_new_game():
     # Put the player on the "s" (start) tile instead of always (0, 0)
     player.x, player.y = find_tile(world[current_map_name], "s")
 
-    type_print("You decide to explore, and try to understand what is going on.")
+    type_print("You decide to explore, and try to find out what is going on.")
     type_print("Try moving around. The controls are listed below: ")
     return player, world, current_map_name, default_flags()
 
@@ -231,7 +231,7 @@ def continue_game():
 
     loaded = read_save_file()
     if loaded is None:
-        type_print("*The save file seems to be broken... starting a new game instead.")
+        type_print("*Oops! The save file seems to be corrupted or broken, sorry about that. I'll start a new game for you instead.")
         return None
 
     player, world, current_map_name, flags = load_save(loaded)
@@ -358,7 +358,7 @@ def run_game():
             if result in ("won", "spared"):
                 flags["boss_done"] = True
                 gx, gy = find_tile(current_map, "gl")
-                current_map[gy][gx] = "f"  # gridlock's gone (or stepped aside), so the way is clear
+                current_map[gy][gx] = "f"  # gridlock's gone or stepped aside, so the way is clear
                 demo_ending(player, result)
                 draw(world, current_map_name, player)
                 result = None  # already handled, don't redraw again below
