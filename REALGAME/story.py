@@ -49,7 +49,7 @@ def ambush(player):
 
     if tragedy and result == "won":
         print()
-        narrate("*The machines fall apart at your feet. They are now useless scraps, left to wither away for good.")
+        narrate("*The machines fall apart at your feet. They are now useless scrap, left to wither away for good.")
         narrate("*Nobody came to help..")
         narrate("*Nobody needed to.")
     return result
@@ -58,11 +58,11 @@ def ambush(player):
 def rescue_cutscene(player):
     print()
     narrate("*Just as things start to look hopeless, a bright flash of light cuts through the air.")
-    narrate("*A small android lands between you and the machines. Its star shaped head flashes the machines.")
+    narrate("*A slim, lanky android lands between you and the machines. Its star shaped head flashes the machines.")
     say("???", "Hey! Over here, you two! Watch this!")
     narrate("*Another flash. The machines stumble, then collapse, twitching.")
     say("???", "That won't hold them for long. Come on, follow me! Quick!")
-    narrate("*You follow the small android along the highway, until it slips through a crack in one of the huge concrete pillars.")
+    narrate("*You follow the slender android along the highway, until it slips through a crack in one of the huge concrete pillars.")
     narrate("*You squeeze in after it.")
     player.heal_full()
     print()
@@ -111,7 +111,7 @@ def talk_to_twinkly(player, flags):
             say("Twinkly", "The truth is, most machines out there aren't evil, they're just scared.")
             say("Twinkly", "With nobody left to fix them up, they'll do anything to keep running. Even scrap each other for parts.")
             say("Twinkly", "And lately, some of them have been acting... strange. Machines whisper about something called the Origin.")
-            say("Twinkly", "Nobody really knows what it is. But it's nothing good, that's for sure.")
+            say("Twinkly", "Nobody really knows what it is. But if you were to ask me, I'd say it's nothing good, that's for sure.")
         elif choice == "4":
             narrate("*You ask Twinkly if you're the only human left.")
             say("Twinkly", "...")
@@ -121,11 +121,11 @@ def talk_to_twinkly(player, flags):
             say("Twinkly", "Hmm... you can't stay in here forever. And no offence, but you won't last long out there alone.")
             say("Twinkly", "So how about I come with you? I know these streets better than anyone!")
             say("Twinkly", "Besides... it's been a while since I had someone to look out for.")
-            say("Twinkly", "Oh! And take this. It's a repair kit, it can patch up just about anything. Even me, if I ever get knocked out!")
+            say("Twinkly", "Oh! And take this. It's a repair kit, it can patch up just about anything. Even me, if something ever happened!")
             player.allies.append(create_twinkly())
             player.add_item("repair_kit")
             print("\n*Twinkly joined your party!*")
-            print("*In battle, Twinkly can now heal you, or calm enemies down so they're easier to spare.*")
+            print("*In battle, Twinkly can now heal you, or calm enemies down so they're easier to spare. Twinkly will not fight, however.*")
             print("*You got a Repair Kit! Use it in battle with [I] ITEM.*\n")
             return True
         elif choice == "0":
@@ -148,9 +148,9 @@ def boss_fight(player):
     say("GRIDLOCK", "THE PENALTY FOR JAYWALKING IS... DELETION.")
     if has_twinkly(player):
         say("Twinkly", "Uh oh. That's GRIDLOCK. He's been stuck on red for, like, ten years.")
-        say("Twinkly", "Maybe if we play by his rules he'll calm down? Or... we could just fight him. Your call!")
+        say("Twinkly", "Maybe if we play by his rules he'll calm down? I mean, we could fight him, but let's try not to!")
     elif player.get_route() == "tragedy":
-        narrate("*GRIDLOCK's lights flicker for a moment, almost like it's nervous.")
+        narrate("*GRIDLOCK's lights flicker for a moment, almost like he's nervous.")
     return start_battle(player, None, enemies=spawn_gridlock())
 
 
@@ -175,7 +175,7 @@ def demo_ending(player, result):
     print()
     print(" ═════════════════════════════════════")
     print("        END OF THE DEMO")
-    print("        Thank you so much for playing")
+    print("  Thank you so much for playing")
     print("        Virtual Insanity!")
     print(" ─────────────────────────────────────")
     print(f"        LV {player.level}   KILLS {player.kills}   SPARES {player.spares}")
@@ -189,13 +189,13 @@ def read_terminal(player):
     narrate("*Most of the files are corrupted. A few logs are still readable.")
     print()
     narrate("> LOG 0412: The new city system is amazing. It does EVERYTHING. I haven't cooked in months lol")
-    narrate("> LOG 0587: Everyone's talking about the ORIGIN update. Apparently it'll make the city run itself completely.")
-    narrate("> LOG 0601: Applications for the Long Sleep programme are now open. They say it's just a nap while the city upgrades.")
+    narrate("> LOG 0587: Everyone's talking about the ORIGIN update. Apparently it'll make the city [ERROR], just like that! It's kinda hard to believe, to be honest.")
+    narrate("> LOG 0601: Applications for [ERROR] are open. They say it'll [ERROR] while the city upgrades.")
     narrate("> LOG 0602: Signed up. See you on the other side, Tarnia.")
     narrate("> LOG 0603: ")
     narrate("> LOG 0603: ")
     narrate("> LOG 0603: ERROR. NO FURTHER LOGS FOUND.")
     print()
     if has_twinkly(player):
-        say("Twinkly", "The Long Sleep...? I've never heard of that. Huh.")
+        say("Twinkly", "Well that's just great, errors for all of the actually important information.. well, I guess we better hurry and find out what happened, right?")
 
