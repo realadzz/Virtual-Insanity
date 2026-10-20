@@ -34,7 +34,7 @@ def buy(player, item, price):
         say("Vendy", "Sorry! That one's out of stock. You bought the last one, remember?")
         return
     if player.platinum < price:
-        say("Vendy", "ERROR: INSUFFICIENT FUNDS. ...that means you're too broke, friend.")
+        say("Vendy", "ERROR: INSUFFICIENT FUNDS. ...that means you're too broke, friend. Hey, I'm not judging though!")
         return
 
     if item in HEALING_ITEMS:
@@ -45,7 +45,7 @@ def buy(player, item, price):
         added = player.add_armour(item)
 
     if not added:
-        say("Vendy", "Your pockets are full! Use some of that stuff first.")
+        say("Vendy", "Your pockets are full! Use some of that good stuff up first.")
         return
 
     player.platinum -= price
@@ -77,10 +77,10 @@ def vendy_introduction(player):
     narrate("*The vending machine's screen flickers on. A cheerful jingle plays, way too loud.")
     if player.get_route() == "tragedy":
         # vendy has heard about what the player's been doing...
-        say("Vendy", "W-WELCOME, VALUED CUSTOMER! P-please don't break me. Just take what you want. And pay. Please pay.")
+        say("Vendy", "W-WELCOME, VALUED CUSTOMER! P-please don't break me. Just take what you want. And pay... please, pay..")
     else:
         say("Vendy", "WELCOME, VALUED CUSTOMER! You're my first customer in... ERROR: DATE NOT FOUND.")
-        say("Vendy", "Name's Vendy! I sell snacks! Well. I used to sell snacks. Now I sell whatever I can find lying around.")
+        say("Vendy", "Name's Vendy! I sell snacks! Well. I used to sell snacks. Now I sell whatever I can find lying around. How, you may ask? Trade secret, my friend.")
 
 
 def talk_to_vendy(player, flags):
@@ -99,9 +99,9 @@ def talk_to_vendy(player, flags):
         if choice == "1":
             shop_menu(player)
         elif choice == "2":
-            say("Vendy", "Business has been slow ever since the humans left. Machines don't really need snacks, you know?")
+            say("Vendy", "Business has been slow ever since the humans disappeared. Machines don't really need snacks, you know?")
             say("Vendy", "Oh, and if you're heading north, watch out for GRIDLOCK. He controls the old intersection.")
-            say("Vendy", "He's been stuck on the same traffic cycle for years. Doesn't let ANYONE cross. Very rude.")
+            say("Vendy", "He's been stuck on the same traffic cycle for years. Doesn't let ANYONE cross. Very rude. And scary.")
         elif choice == "0":
             say("Vendy", "COME AGAIN SOON! Or don't! Actually please do!")
             return
